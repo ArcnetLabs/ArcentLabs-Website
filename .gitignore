@@ -17,6 +17,10 @@ dist-ssr
 .env.local
 .env.production
 
+# Google Service Account keys
+*.gserviceaccount.com.json
+arcnetlabs-web-485714-*.json
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
@@ -27,3 +31,6 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Local Netlify folder
+.netlify

@@ -57,8 +57,9 @@ const ProductsSection = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
   const [selectedProduct, setSelectedProduct] = useState<string | null>(null);
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [message, setMessage] = useState("");
+  const [interest, setInterest] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
 
@@ -71,9 +72,9 @@ const ProductsSection = () => {
     try {
       const success = await submitToWaitlist({
         product: product?.name || '',
+        name,
         email,
-        message,
-        timestamp: new Date().toISOString(),
+        interest,
       });
 
       if (success) {
@@ -98,8 +99,9 @@ const ProductsSection = () => {
     } finally {
       setIsSubmitting(false);
       setSelectedProduct(null);
+      setName("");
       setEmail("");
-      setMessage("");
+      setInterest("");
     }
   };
 
@@ -194,8 +196,9 @@ const ProductsSection = () => {
       <Dialog open={selectedProduct !== null} onOpenChange={(open) => {
         if (!open) {
           setSelectedProduct(null);
+          setName("");
           setEmail("");
-          setMessage("");
+          setInterest("");
         }
       }}>
         <DialogContent className="max-w-md border-neural/30 bg-background/95 backdrop-blur-xl">
@@ -211,7 +214,19 @@ const ProductsSection = () => {
           
           <form onSubmit={handleWaitlistSubmit} className="space-y-4 mt-4">
             <div className="space-y-2">
-              <Label htmlFor="email" className="text-foreground">Email</Label>
+              <Label htmlFor="name" className="text-foreground">Name *</Label>
+              <Input
+                id="name"
+                type="text"
+                placeholder="Your name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required
+                className="bg-background/50 border-neural/30"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="email" className="text-foreground">Email *</Label>
               <Input
                 id="email"
                 type="email"
@@ -223,14 +238,14 @@ const ProductsSection = () => {
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="message" className="text-foreground">
+              <Label htmlFor="interest" className="text-foreground">
                 Tell us about your interest (optional)
               </Label>
               <Textarea
-                id="message"
+                id="interest"
                 placeholder="What are you most excited about?"
-                value={message}
-                onChange={(e) => setMessage(e.target.value)}
+                value={interest}
+                onChange={(e) => setInterest(e.target.value)}
                 rows={3}
                 className="bg-background/50 border-neural/30"
               />
